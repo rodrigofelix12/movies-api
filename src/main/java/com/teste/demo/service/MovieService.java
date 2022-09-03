@@ -1,5 +1,6 @@
 package com.teste.demo.service;
 
+import com.teste.demo.exceptions.MovieNotFoundException;
 import com.teste.demo.model.Movie;
 import com.teste.demo.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,11 @@ public class MovieService {
     }
 
     public Optional<Movie> getMovieById(Long id) {
-        return movieRepository.findById(id);
+        Optional<Movie> op = movieRepository.findById(id);
+        if (op.isEmpty()) {
+            throw new MovieNotFoundException("Movie not found!");
+        }
+        return op;
     }
 
     public Movie createMovie(Movie movie) {
